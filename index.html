@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Para Valentina ❤️</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: linear-gradient(135deg, #ff6b6b, #ff8e8e, #ffb3ba, #ffc0cb);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+        }
+
+        .hearts-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .heart {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.3);
+            font-size: 20px;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 25px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 182, 193, 0.5);
+        }
+
+        .welcome-screen {
+            animation: fadeIn 1s ease-in;
+        }
+
+        .game-screen {
+            display: none;
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .final-screen {
+            display: none;
+            animation: zoomIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-100%); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.5); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        h1 {
+            color: #d63384;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            color: #dc2626;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #666;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+
+        .question {
+            background: linear-gradient(145deg, #ffb3ba, #ffc0cb);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .question h3 {
+            color: #8b0000;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+
+        button {
+            background: linear-gradient(145deg, #ff6b6b, #d63384);
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.3);
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(214, 51, 132, 0.4);
+            background: linear-gradient(145deg, #d63384, #ff6b6b);
+        }
+
+        .start-btn {
+            font-size: 1.2rem;
+            padding: 18px 35px;
+            margin-top: 20px;
+        }
+
+        .photo-gallery {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .photo {
+            width: 120px;
+            height: 120px;
+            background: #ffc0cb;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #8b0000;
+            font-size: 0.9rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid #ff6b6b;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #ffc0cb;
+            border-radius: 4px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #d63384);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .final-message {
+            font-size: 1.4rem;
+            color: #8b0000;
+            margin: 25px 0;
+            font-weight: bold;
+        }
+
+        .song-reference {
+            background: rgba(255, 107, 107, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid #ff6b6b;
+            margin: 20px 0;
+            font-style: italic;
+            color: #8b0000;
+        }
+
+        .sparkle {
+            position: absolute;
+            color: #ffd700;
+            animation: sparkle 2s infinite;
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0; transform: scale(0); }
+            50% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes floatUp {
+            0% { 
+                transform: translateY(0) rotate(0deg);
+                opacity: 1;
+            }
+            100% { 
+                transform: translateY(-100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .response-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .yes-btn {
+            background: linear-gradient(145deg, #28a745, #20c997);
+        }
+
+        .yes-btn:hover {
+            background: linear-gradient(145deg, #20c997, #28a745);
+        }
+ 
+        .maybe-btn {
+            background: linear-gradient(145deg, #ffc107, #fd7e14);
+        }
+
+        .maybe-btn:hover {
+            background: linear-gradient(145deg, #fd7e14, #ffc107);
+        }
+    </style>
+</head>
+<body>
+    <div class="hearts-background" id="heartsBackground"></div>
+
+    <div class="container">
+        <!-- Pantalla de Bienvenida -->
+        <div class="welcome-screen" id="welcomeScreen">
+            <h1>💕 Hola mi Cachetona 💕</h1>
+            <p>Tengo una prueba para ti</p>
+            <p>He preparado un pequeño juego para ti jejeje. Si logras pasar la prueba te esperará un mensajito especial</p>
+            <div class="song-reference">
+                🎵 "Ella es parcerita paisa y yo costeño coleto" 🎵
+                <br><small>- La canción nos define, pero al revés kljskj</small>
+            </div>
+            <button class="start-btn" onclick="startGame()">Empecemos ❤️</button>
+        </div>
+
+        <!-- Pantalla del Juego -->
+        <div class="game-screen" id="gameScreen">
+            <h2>🎮 Prueba de Amor 🎮</h2>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            
+            <div class="question" id="questionContainer">
+                <!-- Las preguntas se cargarán dinámicamente -->
+            </div>
+        </div>
+
+        <!-- Pantalla Final -->
+        <div class="final-screen" id="finalScreen">
+            <h1>💖 Valentina 💖</h1>
+            <div class="photo-gallery">
+                <div class="photo"><img src="photos/vale-1.jpg " alt="Imagen de mi vale linda" width="100px"></div>
+                <div class="photo"><img src="photos/vale-2.jpg" alt="Vale linda otra vez (Te amo)" width="100px"></div>
+                <div class="photo"><img src="photos/vale-3.jpg" alt="Eres el amor de mi vida Vale" width="100px"></div>
+            </div>
+            
+            <div class="final-message">
+                Cada momento contigo ha sido especial. Desde que te conocí, supe que eras diferente.
+                <br><br>
+                Tú eres mi vida entera y aunque yo sea todo lo contrario a ti, 
+                siento que somos perfectos el uno para el otro, por eso te quiero preguntar.
+                <br><br>
+                <strong style="font-size: 1.6rem; color: #d63384;">
+                    ¿Puedo ser tu novio? 💕
+                </strong>
+            </div>
+
+            <div class="response-buttons">
+                <button class="yes-btn" onclick="handleResponse('yes')">¡Sí! 💕</button>
+                <button class="maybe-btn" onclick="handleResponse('maybe')">Lo voy a pensar 🤔</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio elements -->
+    <audio id="backgroundMusic" loop>
+        <source src="sounds/W Sound 05 LA PLENA - Beéle, Westcol, Ovy On The Drums.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="romanticSound">
+        <source src="sounds/Romantic music sound effect.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        const questions = [
+            {
+                question: "¿Qué quiero estudiar?",
+                options: ["Ingenieria Informatica 💻", "Ingenieria en Software 📱", "Paletologia 🍧", "Refrigeración de materiales de construcción (Mojar ladrillos) 🧱"],
+                correct: 0
+            },
+            {
+                question: "¿Cuál es mi comida favorita?",
+                options: ["Frijoles 🫘", "Pastas 🍝", "Arroz con pollo 🍛", "Sancocho 🥘"],
+                correct: 1
+            },
+            {
+                question: "¿Cual es mi color favorito?",
+                options: ["Azul y Verde 💙💚", "Beige y Blanco 🤎🤍", "Amarillo y Naranja 💛🧡", "Morado y Negro 💜🖤"],
+                correct: 1
+            },
+            {
+                question: "¿Cúal es mi mayor miedo?",
+                options: ["Las agujas", "Estar lejos de ti algún día", "El futuro y las decisiones dificiles", "Perder una pelea"],
+                correct: 1
+            },
+            {
+                question: "¿Qué siento por ti?",
+                options: ["Una amistad sin más nada", "Te quiero, pero no más de ahí", "Para los besitos", "Quiero estar contigo toda mi vida y hacerte feliz con mis ocurrencias raras (Como esta pagina jskjsj)"],
+                correct: 3
+            }
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        function startGame() {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('gameScreen').style.display = 'block';
+            
+            // Iniciar la música de fondo
+            const bgMusic = document.getElementById('backgroundMusic');
+            if (bgMusic) {
+                bgMusic.volume = 0.3; // Volumen moderado para que no moleste
+                bgMusic.play().catch(e => console.log('No se pudo reproducir la música automáticamente'));
+            }
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = questions[currentQuestion];
+            const container = document.getElementById('questionContainer');
+            
+            container.innerHTML = `
+                <h3>Pregunta ${currentQuestion + 1} de ${questions.length}</h3>
+                <p><strong>${question.question}</strong></p>
+                <div class="options">
+                    ${question.options.map((option, index) => 
+                        `<button onclick="selectAnswer(${index})">${option}</button>`
+                    ).join('')}
+                </div>
+            `;
+
+            updateProgress();
+        }
+
+        function selectAnswer(selectedIndex) {
+            const question = questions[currentQuestion];
+            
+            if (selectedIndex === question.correct) {
+                score++;
+                showFeedback("Epaa, ud le mete mucho Valentina 💕", true);
+            } else {
+                showFeedback("Noooo Valentina, cómo se nota que me conoce 🙄", false);
+            }
+
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    showQuestion();
+                } else {
+                    showFinalScreen();
+                }
+            }, 2000);
+        }
+
+        function showFeedback(message, isCorrect) {
+            const container = document.getElementById('questionContainer');
+            container.innerHTML = `
+                <div style="padding: 30px; font-size: 1.2rem; color: ${isCorrect ? '#28a745' : '#ff6b6b'};">
+                    ${message}
+                </div>
+            `;
+        }
+
+        function updateProgress() {
+            const progress = (currentQuestion / questions.length) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+        }
+
+        function showFinalScreen() {
+            document.getElementById('gameScreen').style.display = 'none';
+            document.getElementById('finalScreen').style.display = 'block';
+            createSparkles();
+        }
+
+        function handleResponse(response) {
+            if (response === 'yes') {
+                // Parar la música de fondo
+                const bgMusic = document.getElementById('backgroundMusic');
+                if (bgMusic) {
+                    bgMusic.pause();
+                }
+                
+                // Reproducir sonido romántico
+                const romanticSound = document.getElementById('romanticSound');
+                if (romanticSound) {
+                    romanticSound.play();
+                }
+                
+                // Cambiar el fondo a colores más vibrantes
+                document.body.style.background = 'linear-gradient(135deg, #ff1744, #e91e63, #9c27b0, #673ab7)';
+                
+                // Mostrar mensaje especial
+                showSpecialMessage();
+                
+            } else {
+                alert("Está bien, te voy a conquistar con más detalles románticos 😊💕");
+            }
+        }
+
+        function showSpecialMessage() {
+            const finalScreen = document.getElementById('finalScreen');
+            
+            // Crear overlay para el mensaje especial
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                animation: fadeIn 0.5s ease-in;
+            `;
+            
+            const messageBox = document.createElement('div');
+            messageBox.style.cssText = `
+                background: linear-gradient(145deg, #ff6b6b, #d63384);
+                color: white;
+                padding: 40px;
+                border-radius: 25px;
+                text-align: center;
+                max-width: 400px;
+                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+                animation: zoomIn 0.8s ease-out;
+            `;
+            
+            messageBox.innerHTML = `
+                <h2 style="margin-bottom: 20px; font-size: 2rem;">💕✨💕</h2>
+                <p style="font-size: 1.4rem; margin-bottom: 15px; color: white;">
+                    <strong>¿Entonces ya somos novios?</strong>
+                </p>
+                <p style="font-size: 1.1rem; color: rgba(255,255,255,0.9); margin-bottom: 25px;">
+                    Eres perfecta, mi cachetona 💗
+                </p>
+                <button onclick="closeSpecialMessage()" style="
+                    background: rgba(255,255,255,0.2);
+                    color: white;
+                    border: 2px solid white;
+                    padding: 12px 25px;
+                    border-radius: 25px;
+                    font-size: 1rem;
+                    cursor: pointer;
+                ">Si le das acá te doy un pico 🎉</button>
+            `;
+            
+            overlay.appendChild(messageBox);
+            document.body.appendChild(overlay);
+            
+            // Crear más efectos de celebración
+            createCelebrationEffects();
+        }
+
+        function closeSpecialMessage() {
+            const overlay = document.querySelector('div[style*="position: fixed"]');
+            if (overlay) {
+                overlay.remove();
+            }
+        }
+
+        function createCelebrationEffects() {
+            // Crear corazones de celebración
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.innerHTML = ['💕', '💖', '💗', '💝', '❤️'][Math.floor(Math.random() * 5)];
+                    heart.style.cssText = `
+                        position: fixed;
+                        left: ${Math.random() * 100}%;
+                        top: 100%;
+                        font-size: ${Math.random() * 20 + 15}px;
+                        z-index: 999;
+                        pointer-events: none;
+                        animation: floatUp 3s ease-out forwards;
+                    `;
+                    document.body.appendChild(heart);
+                    
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 100);
+            }
+        }
+
+        function createHearts() {
+            const container = document.getElementById('heartsBackground');
+            for (let i = 0; i < 15; i++) {
+                const heart = document.createElement('div');
+                heart.innerHTML = '💕';
+                heart.className = 'heart';
+                heart.style.left = Math.random() * 100 + '%';
+                heart.style.top = Math.random() * 100 + '%';
+                heart.style.animationDelay = Math.random() * 6 + 's';
+                container.appendChild(heart);
+            }
+        }
+
+        function createSparkles() {
+            const container = document.querySelector('.final-screen');
+            for (let i = 0; i < 10; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.innerHTML = '✨';
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 2 + 's';
+                container.appendChild(sparkle);
+            }
+        }
+
+        // Inicializar efectos
+        window.onload = function() {
+            createHearts();
+        };
+    </script>
+</body>
+</html>
